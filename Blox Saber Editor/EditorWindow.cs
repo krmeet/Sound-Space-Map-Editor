@@ -7,11 +7,14 @@ using System.Linq;
 using System.Net;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 using System.Runtime.InteropServices.WindowsRuntime;
 =======
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 >>>>>>> parent of 86a6c55 (optimizations, redesign, autoplay)
+=======
+>>>>>>> parent of 2cde2dc (fixes)
 =======
 >>>>>>> parent of 2cde2dc (fixes)
 using System.Text;
@@ -948,6 +951,7 @@ namespace Blox_Saber_Editor
 =======
 						time += (long)((decimal)e.DeltaPrecise * bpmDivided);
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of 86a6c55 (optimizations, redesign, autoplay)
 
 						time = (long)(Math.Round((time - offset) / bpmDivided) * bpmDivided + offset);
@@ -956,6 +960,8 @@ namespace Blox_Saber_Editor
 
 						time = (long)((long)Math.Round(time / (decimal)bpmDivided) * bpmDivided + offset);
 >>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
+=======
+>>>>>>> parent of 2cde2dc (fixes)
 =======
 >>>>>>> parent of 2cde2dc (fixes)
 					}
@@ -989,7 +995,10 @@ namespace Blox_Saber_Editor
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 2cde2dc (fixes)
 =======
 >>>>>>> parent of 2cde2dc (fixes)
 		private bool TrySetTempo(float tempo)
@@ -1000,9 +1009,15 @@ namespace Blox_Saber_Editor
 				var newSpeed = Math.Max(0.2f, Math.Min(1, tempo));
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 				if (newSpeed != MusicPlayer.Speed)
 				{
 					MusicPlayer.Speed = newSpeed;
+=======
+				if (newSpeed != MusicPlayer.Tempo)
+				{
+					MusicPlayer.Tempo = newSpeed;
+>>>>>>> parent of 2cde2dc (fixes)
 =======
 				if (newSpeed != MusicPlayer.Tempo)
 				{
@@ -1016,7 +1031,10 @@ namespace Blox_Saber_Editor
 		}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
+=======
+>>>>>>> parent of 2cde2dc (fixes)
 =======
 >>>>>>> parent of 2cde2dc (fixes)
 		public bool WillClose()

@@ -111,9 +111,12 @@
     </Reference>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Reference Include="OpenTK, Version=3.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.3.1.0\lib\net20\OpenTK.dll</HintPath>
 =======
+=======
+>>>>>>> parent of 2cde2dc (fixes)
 =======
 >>>>>>> parent of 2cde2dc (fixes)
     <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -121,11 +124,14 @@
       <Private>True</Private>
     </Reference>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Reference Include="OpenTK, Version=3.0.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.3.0.1\lib\net20\OpenTK.dll</HintPath>
       <Private>True</Private>
 >>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
 =======
+=======
+>>>>>>> parent of 2cde2dc (fixes)
 =======
 >>>>>>> parent of 2cde2dc (fixes)
     <Reference Include="OpenTK, Version=3.0.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
@@ -223,6 +229,10 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  <Import Project="..\packages\BASS.Native.2.4.12.2\build\BASS.Native.targets" Condition="Exists('..\packages\BASS.Native.2.4.12.2\build\BASS.Native.targets')" />
+>>>>>>> parent of 2cde2dc (fixes)
 =======
   <Import Project="..\packages\BASS.Native.2.4.12.2\build\BASS.Native.targets" Condition="Exists('..\packages\BASS.Native.2.4.12.2\build\BASS.Native.targets')" />
 >>>>>>> parent of 2cde2dc (fixes)

@@ -1,6 +1,12 @@
 ﻿using System;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+using System.IO;
+using Blox_Saber_Editor.SoundTouch;
+using NAudio.Wave;
+>>>>>>> parent of 2cde2dc (fixes)
 =======
 using System.IO;
 using Blox_Saber_Editor.SoundTouch;
@@ -36,6 +42,7 @@ namespace Blox_Saber_Editor
 		{
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			var stream = Bass.BASS_StreamCreateFile(file, 0, 0, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_STREAM_PRESCAN | BASSFlag.BASS_FX_FREESOURCE);
 			var volume = Volume;
 			var tempo = Tempo;
@@ -63,6 +70,15 @@ namespace Blox_Saber_Editor
 			var stream = Bass.BASS_StreamCreateFile(file, 0, 0, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE);
 			var volume = Volume;
 			var tempo = Tempo;
+=======
+			var stream = Bass.BASS_StreamCreateFile(file, 0, 0, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE);
+			var volume = Volume;
+			var tempo = Tempo;
+
+			Bass.BASS_StreamFree(streamID);
+
+			streamID = BassFx.BASS_FX_TempoCreate(stream, BASSFlag.BASS_DEFAULT);
+>>>>>>> parent of 2cde2dc (fixes)
 
 			Bass.BASS_StreamFree(streamID);
 
@@ -79,12 +95,15 @@ namespace Blox_Saber_Editor
 		{
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Bass.BASS_ChannelPlay(streamID, false);
 =======
 			lock (locker)
 			{
 				var time = CurrentTime;
 =======
+=======
+>>>>>>> parent of 2cde2dc (fixes)
 			//lock (locker)
 			{
 				Bass.BASS_ChannelPlay(streamID, false);
@@ -110,6 +129,7 @@ namespace Blox_Saber_Editor
 		{
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			var pos = Bass.BASS_ChannelGetPosition(streamID, BASSMode.BASS_POS_BYTES);
 
 			Bass.BASS_ChannelPause(streamID);
@@ -123,15 +143,21 @@ namespace Blox_Saber_Editor
 			}
 >>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
 =======
+=======
+>>>>>>> parent of 2cde2dc (fixes)
 			//lock (locker)
 			{
 				Stop();
 			//	Bass.BASS_ChannelPause(streamID);
 			}
+<<<<<<< HEAD
+>>>>>>> parent of 2cde2dc (fixes)
+=======
 >>>>>>> parent of 2cde2dc (fixes)
 		}
 		public void Stop()
 		{
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -153,10 +179,15 @@ namespace Blox_Saber_Editor
 			Bass.BASS_ChannelSetPosition(streamID, pos, BASSMode.BASS_POS_BYTES);
 >>>>>>> parent of 86a6c55 (optimizations, redesign, autoplay)
 =======
+=======
+>>>>>>> parent of 2cde2dc (fixes)
 			//lock (locker)
 			{
 				Bass.BASS_ChannelStop(streamID);
 			}
+<<<<<<< HEAD
+>>>>>>> parent of 2cde2dc (fixes)
+=======
 >>>>>>> parent of 2cde2dc (fixes)
 		}
 
@@ -202,7 +233,11 @@ namespace Blox_Saber_Editor
 		}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> parent of 2cde2dc (fixes)
 =======
 
 >>>>>>> parent of 2cde2dc (fixes)
@@ -220,6 +255,7 @@ namespace Blox_Saber_Editor
 		{
 			get
 			{
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 				var pos = Bass.BASS_ChannelGetPosition(streamID, BASSMode.BASS_POS_BYTES);
@@ -245,6 +281,12 @@ namespace Blox_Saber_Editor
 
 				return time;
 >>>>>>> parent of 2cde2dc (fixes)
+=======
+				long pos = Bass.BASS_ChannelGetPosition(streamID, BASSMode.BASS_POS_BYTES);
+				var time = TimeSpan.FromSeconds(Bass.BASS_ChannelBytes2Seconds(streamID, pos));
+
+				return time;
+>>>>>>> parent of 2cde2dc (fixes)
 			}
 			set
 			{
@@ -257,7 +299,11 @@ namespace Blox_Saber_Editor
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		public decimal Progress
+=======
+		public double Progress
+>>>>>>> parent of 2cde2dc (fixes)
 =======
 		public double Progress
 >>>>>>> parent of 2cde2dc (fixes)
@@ -267,6 +313,7 @@ namespace Blox_Saber_Editor
 				var pos = Bass.BASS_ChannelGetPosition(streamID, BASSMode.BASS_POS_BYTES);
 				var length = Bass.BASS_ChannelGetLength(streamID, BASSMode.BASS_POS_BYTES);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 				return pos / (decimal)length;
 =======
@@ -278,6 +325,9 @@ namespace Blox_Saber_Editor
 					Pause();
 				}
 >>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
+=======
+				return (double)(pos / (decimal)length);
+>>>>>>> parent of 2cde2dc (fixes)
 =======
 				return (double)(pos / (decimal)length);
 >>>>>>> parent of 2cde2dc (fixes)
