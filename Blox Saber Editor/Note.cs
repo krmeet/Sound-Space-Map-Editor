@@ -6,14 +6,14 @@ namespace Sound_Space_Editor
 	[Serializable]
 	class Note
 	{
-		public float X;
-		public float Y;
+		public int X;
+		public int Y;
 		public long Ms;
 		public long DragStartMs;
 
 		public Color Color;
 
-		public Note(float x, float y, long ms)
+		public Note(int x, int y, long ms)
 		{
 			X = x;
 			Y = y;
