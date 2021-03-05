@@ -2,7 +2,7 @@
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace Sound_Space_Editor.Gui
+namespace Blox_Saber_Editor.Gui
 {
 	class GuiButton : Gui
 	{

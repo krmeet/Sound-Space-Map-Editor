@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Sound_Space_Editor
+namespace Blox_Saber_Editor
 {
 	[Serializable]
 	class Note

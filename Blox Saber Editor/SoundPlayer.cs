@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Fx;
 
-namespace Sound_Space_Editor
+namespace Blox_Saber_Editor
 {
 	//class SoundPlayer : IDisposable
 	//{

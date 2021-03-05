@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sound_Space_Editor
+namespace Blox_Saber_Editor
 {
 	class UndoRedoAction
 	{

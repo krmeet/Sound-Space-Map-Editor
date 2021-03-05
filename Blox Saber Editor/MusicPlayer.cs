@@ -7,7 +7,7 @@ using Blox_Saber_Editor.SoundTouch;
 using NAudio.Wave;
 >>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
 
-namespace Sound_Space_Editor
+namespace Blox_Saber_Editor
 {
 	class MusicPlayer : IDisposable
 	{
@@ -101,6 +101,7 @@ namespace Sound_Space_Editor
 		public void Stop()
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Bass.BASS_ChannelStop(streamID);
 
 			Bass.BASS_ChannelSetPosition(streamID, 0, BASSMode.BASS_POS_BYTES);
@@ -111,6 +112,13 @@ namespace Sound_Space_Editor
 				_player.Stop();
 			}
 >>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
+=======
+			var pos = Bass.BASS_ChannelGetPosition(streamID, BASSMode.BASS_POS_BYTES);
+
+			Bass.BASS_ChannelStop(streamID);
+
+			Bass.BASS_ChannelSetPosition(streamID, pos, BASSMode.BASS_POS_BYTES);
+>>>>>>> parent of 86a6c55 (optimizations, redesign, autoplay)
 		}
 
 		public float Speed

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using OpenTK.Input;
 
-namespace Sound_Space_Editor.Gui
+namespace Blox_Saber_Editor.Gui
 {
 	class GuiScreen : Gui
 	{
@@ -50,7 +50,7 @@ namespace Sound_Space_Editor.Gui
 				{
 					button.OnMouseClick(x, y);
 
-					EditorWindow.Instance.SoundPlayer.Play("click", 0.035f);
+					EditorWindow.Instance.SoundPlayer.Play("click", 0.05f);
 					OnButtonClicked(button.Id);
 					break;
 				}

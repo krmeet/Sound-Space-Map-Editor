@@ -4,14 +4,14 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace Sound_Space_Editor
+namespace Blox_Saber_Editor
 {
 	class Program
 	{
-		//TODO - add arrow controls to navigate through ticks, add an option to disable snapping to ticks
+		//TODO - add arrow controls to navigate though ticks, add an option to disable snapping to ticks
 
 		[STAThread]
-		static void Main(string[] args)
+		static void Main()
 		{
 			Application.SetCompatibleTextRenderingDefault(false);
 
@@ -19,14 +19,7 @@ namespace Sound_Space_Editor
 
 			try
 			{
-				long offset = 0;
-
-				if (args.Length >= 2 && args[0] == "-o")
-				{
-					long.TryParse(args[1], out offset);
-				}
-
-				w = new EditorWindow(offset);
+				w = new EditorWindow();
 			}
 			catch(Exception e)
 			{

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using OpenTK.Graphics.OpenGL;
 using Color = System.Drawing.Color;
 
-namespace Sound_Space_Editor.Gui
+namespace Blox_Saber_Editor.Gui
 {
 	class GuiScreenLoadCreate : GuiScreen
 	{
@@ -24,9 +24,9 @@ namespace Sound_Space_Editor.Gui
 
 		public GuiScreenLoadCreate() : base(0, 0, EditorWindow.Instance.ClientSize.Width, EditorWindow.Instance.ClientSize.Height)
 		{
-			using (var img = Properties.Resources.logo)
+			using (var img = Properties.Resources.BloxSaber)
 			{
-				_textureId = TextureManager.GetOrRegister("logo", img, true);
+				_textureId = TextureManager.GetOrRegister("logo", img);
 			}
 
 			_createButton = new GuiButton(0, 0, 0, 192, 64, "CREATE MAP");
@@ -55,7 +55,7 @@ namespace Sound_Space_Editor.Gui
 					var y = ClientRectangle.Height + s;
 
 					var mx = -0.5f + (float)_r.NextDouble();
-					var my = -(2 + (float)_r.NextDouble() * 2);
+					var my = -(0.35f + (float)_r.NextDouble() * 0.75f);
 
 					_particles.Add(new Particle(x, y, mx, my, s));
 				}
@@ -128,7 +128,7 @@ namespace Sound_Space_Editor.Gui
 			return false;
 		}
 
-		public sealed override void OnResize(Size size)
+		public override void OnResize(Size size)
 		{
 			ClientRectangle = new RectangleF(0, 0, size.Width, size.Height);
 
@@ -147,9 +147,7 @@ namespace Sound_Space_Editor.Gui
 
 		public bool IsDead;
 
-		private static readonly Random _r = new Random();
-
-		private readonly int _vertices = _r.Next(3, 6);
+		private static Random _r = new Random();
 
 		public Particle(float x, float y, float mx, float my, float size)
 		{
@@ -191,20 +189,14 @@ namespace Sound_Space_Editor.Gui
 
 			var alpha = (int)(255 * squareMult);
 
-			GL.Color4(RotationOrientation == 1 ? Color.FromArgb((int)(alpha * 0.2f), 255, 0, 240) : Color.FromArgb((int)(alpha * 0.2f), 0, 255, 200));
+			GL.Color4(RotationOrientation == 1 ? Color.FromArgb((int)(alpha * 0.2f), 255, 0, 0) : Color.FromArgb((int)(alpha * 0.2f), 0, 255, 255));
 			GL.Translate(X, Y, 0);
 			GL.Rotate(Angle, 0, 0, 1);
-			GL.PolygonMode(MaterialFace.Front, PolygonMode.Fill);
-			//Glu.RenderQuad(-size / 2, -size / 2, size, size);
-			Glu.RenderCircle(0, 0, size / 2, _vertices);
-			GL.Color4(RotationOrientation == 1 ? Color.FromArgb(alpha, 255, 0, 240) : Color.FromArgb(alpha, 0, 255, 200));
-			GL.PolygonMode(MaterialFace.Front, PolygonMode.Line);
-			Glu.RenderCircle(0, 0, size / 2, _vertices);
-			//Glu.RenderOutline(-size / 2, -size / 2, size, size);
+			Glu.RenderQuad(-size / 2, -size / 2, size, size);
+			GL.Color4(RotationOrientation == 1 ? Color.FromArgb(alpha, 255, 0, 0) : Color.FromArgb(alpha, 0, 255, 255));
+			Glu.RenderOutline(-size / 2, -size / 2, size, size);
 			GL.Rotate(-Angle, 0, 0, 1);
 			GL.Translate(-X, -Y, 0);
-
-			GL.PolygonMode(MaterialFace.Front, PolygonMode.Fill);
 		}
 	}
 }

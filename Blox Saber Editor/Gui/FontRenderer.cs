@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace Sound_Space_Editor.Gui
+namespace Blox_Saber_Editor.Gui
 {
 	class FontRenderer
 	{

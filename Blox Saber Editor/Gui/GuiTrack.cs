@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenTK.Graphics.OpenGL;
 
-namespace Sound_Space_Editor.Gui
+namespace Blox_Saber_Editor.Gui
 {
 	class GuiTrack : Gui
 	{
@@ -11,9 +11,9 @@ namespace Sound_Space_Editor.Gui
 
 		public Note MouseOverNote;
 
-		public float ScreenX = 300;
+		public decimal ScreenX = 300;
 
-		public static float Bpm = 0;//150;
+		public static decimal Bpm = 0;//150;
 		public static long BpmOffset = 0; //in ms
 		public int BeatDivisor = 8;
 
@@ -34,26 +34,26 @@ namespace Sound_Space_Editor.Gui
 
 			var fr = EditorWindow.Instance.FontRenderer;
 
-			float cellSize = rect.Height;
-			float noteSize = cellSize * 0.65f;
+			decimal cellSize = (decimal)rect.Height;
+			decimal noteSize = cellSize * (decimal)0.65;
 
 			var gap = cellSize - noteSize;
 
-			float audioTime = (float)EditorWindow.Instance.MusicPlayer.CurrentTime.TotalMilliseconds;
+			decimal audioTime = (decimal)EditorWindow.Instance.MusicPlayer.CurrentTime.TotalMilliseconds;
 
-			float cubeStep = EditorWindow.Instance.CubeStep;
-			float posX = audioTime / 1000 * cubeStep;
-			float maxX = (float)EditorWindow.Instance.MusicPlayer.TotalTime.TotalMilliseconds / 1000f * cubeStep;
+			decimal cubeStep = (decimal)EditorWindow.Instance.CubeStep;
+			decimal posX = audioTime / 1000 * cubeStep;
+			decimal maxX = (decimal)EditorWindow.Instance.MusicPlayer.TotalTime.TotalMilliseconds / 1000 * cubeStep;
 
 			var zoomLvl = EditorWindow.Instance.Zoom;
-			float lineSpace = cubeStep / zoomLvl;
+			decimal lineSpace = cubeStep / zoomLvl;
 
-			float lineX = ScreenX - posX;
+			decimal lineX = ScreenX - posX;
 			if (lineX < 0)
 				lineX %= lineSpace;
 
 			//render quarters of a second depending on zoom level
-			while (lineSpace > 0 && lineX < rect.Width)
+			while (lineSpace > 0 && lineX < (decimal)rect.Width)
 			{
 				GL.Color3(0.85f, 0.85f, 0.85f);
 				GL.Begin(PrimitiveType.Lines);
@@ -90,32 +90,27 @@ namespace Sound_Space_Editor.Gui
 			for (int i = 0; i < EditorWindow.Instance.Notes.Count; i++)
 			{
 				Note note = EditorWindow.Instance.Notes[i];
-
 				note.Color = _cs.Next();
 
-				var x = Math.Round(ScreenX - posX + note.Ms / 1000f * cubeStep);
+				decimal x = ScreenX - posX + note.Ms / (decimal)1000 * cubeStep;
 
-				if (x > rect.Width)
-					break;
-
-				if (x < rect.X - noteSize)
+				if (x < (decimal)rect.X - noteSize || x > (decimal)rect.Width)
 					continue;
 
 				var alphaMult = 1f;
 
-				if (audioTime - 1 > note.Ms)//(x <= ScreenX)
+				if (x <= ScreenX)
 				{
 					alphaMult = 0.35f;
 				}
 
-				var y = rect.Y + gap / 2;
+				var y = (decimal)rect.Y + gap / 2;
 
-				var noteRect = new RectangleF((int)x, (int)y, noteSize, noteSize);
+				var noteRect = new RectangleF((int)x, (int)y, (float)noteSize, (float)noteSize);
 
 				var b = MouseOverNote == null && !mouseOver && noteRect.Contains(mouseX, mouseY);
 
-				if ((b || EditorWindow.Instance.SelectedNotes.Contains(note)) &&
-					!EditorWindow.Instance.IsDraggingNoteOnTimeLine)
+				if ((b || EditorWindow.Instance.SelectedNotes.Contains(note)) && !EditorWindow.Instance.IsDraggingNoteOnTimeLine)
 				{
 					if (b)
 					{
@@ -135,7 +130,7 @@ namespace Sound_Space_Editor.Gui
 
 				GL.Color4(c);
 				Glu.RenderQuad((int)x, (int)y, (int)noteSize, (int)noteSize);
-				GL.Color4(note.Color.R, note.Color.G, note.Color.B, alphaMult);
+				GL.Color4(note.Color.R, note.Color.G, note.Color.B, alphaMult * 1f);
 				Glu.RenderOutline((int)x, (int)y, (int)noteSize, (int)noteSize);
 
 				var gridGap = 2;
@@ -148,25 +143,18 @@ namespace Sound_Space_Editor.Gui
 					var gridY = (int)y + indexY * (9 + gridGap) + 5;
 
 					if (note.X == indexX && note.Y == indexY)
-					{
-						GL.Color4(note.Color.R, note.Color.G, note.Color.B, alphaMult);
 						Glu.RenderQuad(gridX, gridY, 9, 9);
-					}
 					else
-					{
-						GL.Color4(note.Color.R, note.Color.G, note.Color.B, alphaMult * 0.45);
 						Glu.RenderOutline(gridX, gridY, 9, 9);
-					}
 				}
 
 				var numText = $"{(i + 1):##,###}";
 
-				GL.Color3(0, 1, 200 / 255f);
+				GL.Color3(0, 0.75f, 1f);
 				fr.Render(numText, (int)x + 3, (int)(rect.Y + rect.Height) + 3, 16);
 
-				GL.Color3(1f, 0, 1);
-				fr.Render($"{note.Ms:##,###}ms", (int)x + 3,
-					(int)(rect.Y + rect.Height + fr.GetHeight(16)) + 3 + 2, 16);
+				GL.Color3(0, 1f, 0.45f);
+				fr.Render($"{note.Ms:##,###}ms", (int)x + 3, (int)(rect.Y + rect.Height + fr.GetHeight(16)) + 3 + 2, 16);
 
 				//draw line
 				GL.Color4(1f, 1f, 1f, alphaMult);
@@ -181,22 +169,12 @@ namespace Sound_Space_Editor.Gui
 				lineSpace = 60 / Bpm * cubeStep;
 				var stepSmall = lineSpace / BeatDivisor;
 
-				lineX = ScreenX - posX + BpmOffset / 1000f * cubeStep;
+				lineX = ScreenX - posX + BpmOffset / (decimal)1000 * cubeStep;
 				if (lineX < 0)
 					lineX %= lineSpace;
 
-				if (lineSpace > 0 && lineX < rect.Width)
-				{
-					//draw offset start line
-					GL.Color4(0f, 1f, 200 / 255f, 0.5);
-					GL.Begin(PrimitiveType.Lines);
-					GL.Vertex2((int)lineX + 0.5f, 0);
-					GL.Vertex2((int)lineX + 0.5f, rect.Bottom);
-					GL.End();
-				}
-
 				//render BPM lines
-				while (lineSpace > 0 && lineX < rect.Width && lineX < endLineX)
+				while (lineSpace > 0 && lineX < (decimal)rect.Width)
 				{
 					GL.Color3(0, 1f, 0);
 					GL.Begin(PrimitiveType.Lines);
@@ -208,7 +186,7 @@ namespace Sound_Space_Editor.Gui
 					{
 						var xo = lineX + j * stepSmall;
 
-						if (j < BeatDivisor && xo < endLineX)
+						if (j < BeatDivisor)
 						{
 							var half = j == BeatDivisor / 2 && BeatDivisor % 2 == 0;
 
@@ -227,12 +205,11 @@ namespace Sound_Space_Editor.Gui
 					lineX += lineSpace;
 				}
 			}
-
 			//draw screen line
-			GL.Color4(1f, 1, 1, 0.75);
+			GL.Color3(1f, 0.5f, 0);
 			GL.Begin(PrimitiveType.Lines);
-			GL.Vertex2((int)(rect.X + ScreenX) + 0.5, rect.Y + 4);
-			GL.Vertex2((int)(rect.X + ScreenX) + 0.5, rect.Y + rect.Height - 4);
+			GL.Vertex2(rect.X + (float)ScreenX + 0.5, rect.Y + 4);
+			GL.Vertex2(rect.X + (float)ScreenX + 0.5, rect.Y + rect.Height - 4);
 			GL.End();
 
 			//GL.Color3(1, 1, 1f);
@@ -243,7 +220,7 @@ namespace Sound_Space_Editor.Gui
 		{
 			ClientRectangle = new RectangleF(0, ClientRectangle.Y, size.Width, ClientRectangle.Height);
 
-			ScreenX = ClientRectangle.Width / 2.5f;
+			ScreenX = (decimal)(ClientRectangle.Width / 2.5);
 		}
 
 		public List<Note> GetNotesInRect(RectangleF selectionRect)
@@ -252,29 +229,29 @@ namespace Sound_Space_Editor.Gui
 
 			var rect = ClientRectangle;
 
-			float cellSize = rect.Height;
-			float noteSize = cellSize * 0.65f;
+			decimal cellSize = (decimal)rect.Height;
+			decimal noteSize = cellSize * (decimal)0.65;
 
-			float gap = cellSize - noteSize;
+			decimal gap = cellSize - noteSize;
 
-			float audioTime = (float)EditorWindow.Instance.MusicPlayer.CurrentTime.TotalMilliseconds;
+			decimal audioTime = (decimal)EditorWindow.Instance.MusicPlayer.CurrentTime.TotalMilliseconds;
 
-			float cubeStep = EditorWindow.Instance.CubeStep;
-			float posX = audioTime / 1000 * cubeStep;
+			decimal cubeStep = (decimal)EditorWindow.Instance.CubeStep;
+			decimal posX = audioTime / 1000 * cubeStep;
 
 			for (int i = 0; i < EditorWindow.Instance.Notes.Count; i++)
 			{
 				Note note = EditorWindow.Instance.Notes[i];
 				note.Color = _cs.Next();
 
-				float x = ScreenX - posX + note.Ms / 1000f * cubeStep;
+				decimal x = ScreenX - posX + note.Ms / (decimal)1000 * cubeStep;
 
-				if (x < rect.X - noteSize || x > rect.Width)
+				if (x < (decimal)rect.X - noteSize || x > (decimal)rect.Width)
 					continue;
 
-				float y = rect.Y + gap / 2;
+				decimal y = (decimal)rect.Y + gap / 2;
 
-				var noteRect = new RectangleF(x, y, noteSize, noteSize);
+				var noteRect = new RectangleF((float)x, (float)y, (float)noteSize, (float)noteSize);
 
 				if (selectionRect.IntersectsWith(noteRect))
 					notes.Add(note);

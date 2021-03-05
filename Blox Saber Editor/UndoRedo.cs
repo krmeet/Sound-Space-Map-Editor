@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Sound_Space_Editor.Gui;
+using Blox_Saber_Editor.Gui;
 
-namespace Sound_Space_Editor
+namespace Blox_Saber_Editor
 {
 	class UndoRedo
 	{
@@ -27,7 +27,7 @@ namespace Sound_Space_Editor
 				return;
 
 			if (EditorWindow.Instance.GuiScreen is GuiScreenEditor editor)
-				editor.ShowToast("UNDONE: " + action.Label, Color.FromArgb(0, 255, 200));
+				editor.ShowToast("UNDONE: " + action.Label, Color.Chartreuse);
 
 			action.Undo?.Invoke();
 			action.Undone = true;
@@ -41,15 +41,10 @@ namespace Sound_Space_Editor
 				return;
 
 			if (EditorWindow.Instance.GuiScreen is GuiScreenEditor editor)
-				editor.ShowToast("REDONE: " + action.Label, Color.FromArgb(0, 255, 200));
+				editor.ShowToast("REDONE: " + action.Label, Color.Chartreuse);
 
 			action.Redo?.Invoke();
 			action.Undone = false;
-		}
-
-		public void Clear()
-		{
-			_actions.Clear();
 		}
 	}
 }

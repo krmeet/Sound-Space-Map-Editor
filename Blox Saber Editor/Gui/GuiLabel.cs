@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using OpenTK.Graphics.OpenGL;
 
-namespace Sound_Space_Editor.Gui
+namespace Blox_Saber_Editor.Gui
 {
 	class GuiLabel : Gui
 	{

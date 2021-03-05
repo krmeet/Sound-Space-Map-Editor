@@ -1,9 +1,7 @@
-﻿using System;
-using System.Drawing;
-using OpenTK;
+﻿using System.Drawing;
 using OpenTK.Graphics.OpenGL;
 
-namespace Sound_Space_Editor
+namespace Blox_Saber_Editor
 {
 	static class Glu
 	{
@@ -78,23 +76,6 @@ namespace Sound_Space_Editor
 		public static void RenderOutline(RectangleF rect)
 		{
 			RenderOutline(rect.X, rect.Y, rect.Width, rect.Height);
-		}
-
-		public static void RenderCircle(float x, float y, float r, int pts = 6)
-		{
-			GL.Begin(PrimitiveType.Polygon);
-
-			for (int i = 0; i < pts; i++)
-			{
-				var a = i / (float)pts * MathHelper.TwoPi;
-
-				var cx = Math.Cos(a) * r;
-				var cy = -Math.Sin(a) * r;
-
-				GL.Vertex2(x + cx, y + cy);
-			}
-
-			GL.End();
 		}
 	}
 }
