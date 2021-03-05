@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -644,7 +645,18 @@ namespace Sound_Space_Editor
 				}
 				if (editor.Timeline.Dragging)
 				{
+					var wasPlaying = MusicPlayer.IsPlaying;
+
+					//var progress = (e.X - editor.ClientRectangle.Height / 2f) /
+					//(editor.ClientRectangle.Width - editor.ClientRectangle.Height);
+
+					//progress = Math.Max(0, Math.Min(1, progress));
+
+					MusicPlayer.Stop();
 					MusicPlayer.CurrentTime = TimeSpan.FromTicks((long)(MusicPlayer.TotalTime.Ticks * (decimal)editor.Timeline.Progress));
+
+					if (wasPlaying)
+						MusicPlayer.Play();
 				}
 
 				editor.BeatSnapDivisor.Dragging = false;
@@ -961,9 +973,15 @@ namespace Sound_Space_Editor
 
 						var offset = (bpmDivided + GuiTrack.BpmOffset) % bpmDivided;
 
+<<<<<<< HEAD
 						time += (long)(e.DeltaPrecise * bpmDivided);
 
 						time = (long)(Math.Round((time - offset) / bpmDivided) * bpmDivided + offset);
+=======
+						time += (long)((decimal)e.DeltaPrecise * bpmDivided);
+
+						time = (long)((long)Math.Round(time / (decimal)bpmDivided) * bpmDivided + offset);
+>>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
 					}
 					else
 					{
@@ -993,6 +1011,26 @@ namespace Sound_Space_Editor
 			}
 		}
 
+<<<<<<< HEAD
+=======
+		private bool TrySetTempo(float tempo)
+		{
+			if ((DateTime.Now - _lastTempoChange).TotalMilliseconds >= 35)
+			{
+				_lastTempoChange = DateTime.Now;
+				var newSpeed = Math.Max(0.2f, Math.Min(1, tempo));
+
+				if (newSpeed != MusicPlayer.Speed)
+				{
+					MusicPlayer.Speed = newSpeed;
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+>>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
 		public bool WillClose()
 		{
 			if (!_saved && _soundId != -1)

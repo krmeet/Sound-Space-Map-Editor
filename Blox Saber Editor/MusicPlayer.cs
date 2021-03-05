@@ -1,127 +1,203 @@
 ﻿using System;
+<<<<<<< HEAD
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Fx;
+=======
+using Blox_Saber_Editor.SoundTouch;
+using NAudio.Wave;
+>>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
 
 namespace Sound_Space_Editor
 {
 	class MusicPlayer : IDisposable
 	{
-		private object locker = new object();
+		private WaveStream _music;
+		private WaveChannel32 _volumeStream;
+		private WaveOutEvent _player;
+		private VarispeedSampleProvider _speedControl;
+		
+		private readonly BetterTimer _time;
 
-		private int streamID;
+		private object locker = new object();
 
 		public MusicPlayer()
 		{
-			Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
+			_player = new WaveOutEvent();
+			_time = new BetterTimer();
 		}
 
 		public void Load(string file)
 		{
+<<<<<<< HEAD
 			var stream = Bass.BASS_StreamCreateFile(file, 0, 0, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_STREAM_PRESCAN | BASSFlag.BASS_FX_FREESOURCE);
 			var volume = Volume;
 			var tempo = Tempo;
+=======
+			_music?.Dispose();
+			_volumeStream?.Dispose();
+			_player?.Dispose();
+			_speedControl?.Dispose();
+>>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
 
-			Bass.BASS_StreamFree(streamID);
+			var reader = new AudioFileReader(file);
+			_music = reader;
+			_volumeStream = new WaveChannel32(_music, Volume, 0);
+			_player = new WaveOutEvent();
 
+<<<<<<< HEAD
 			Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_BUFFER, 250);
 			Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_UPDATEPERIOD, 5);
 
 			streamID = BassFx.BASS_FX_TempoCreate(stream, BASSFlag.BASS_STREAM_PRESCAN);
+=======
+			_speedControl = new VarispeedSampleProvider(reader, 150, new SoundTouchProfile(true, true));
+>>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
 
-			Volume = volume;
-			Tempo = tempo;
+			Init();
 
 			Reset();
 		}
 
+		public void Init() => _player.Init(_speedControl);
 		public void Play()
 		{
+<<<<<<< HEAD
 			Bass.BASS_ChannelPlay(streamID, false);
-		}
+=======
+			lock (locker)
+			{
+				var time = CurrentTime;
 
+				if (Progress >= 0.999998)
+				{
+					time = TimeSpan.Zero;
+				}
+
+				Stop();
+
+				CurrentTime = time;
+
+				_player.Play();
+				_time.Start();
+			}
+>>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
+		}
 		public void Pause()
 		{
+<<<<<<< HEAD
 			var pos = Bass.BASS_ChannelGetPosition(streamID, BASSMode.BASS_POS_BYTES);
 
 			Bass.BASS_ChannelPause(streamID);
 
 			Bass.BASS_ChannelSetPosition(streamID, pos, BASSMode.BASS_POS_BYTES);
+=======
+			lock (locker)
+			{
+				_time.Stop();
+				_player.Pause();
+			}
+>>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
 		}
-
 		public void Stop()
 		{
+<<<<<<< HEAD
 			Bass.BASS_ChannelStop(streamID);
 
 			Bass.BASS_ChannelSetPosition(streamID, 0, BASSMode.BASS_POS_BYTES);
+=======
+			lock (locker)
+			{
+				_time.Reset();
+				_player.Stop();
+			}
+>>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
 		}
 
-		public float Tempo
+		public float Speed
 		{
-			set => Bass.BASS_ChannelSetAttribute(streamID, BASSAttribute.BASS_ATTRIB_TEMPO, value * 100 - 100);
-			get
+			get => _speedControl?.PlaybackRate ?? 1;
+
+			set
 			{
-				float val = 0;
+				lock (locker)
+				{
+					var wasPlaying = IsPlaying;
 
-				Bass.BASS_ChannelGetAttribute(streamID, BASSAttribute.BASS_ATTRIB_TEMPO, ref val);
+					Pause();
+					_time.SetSpeed(value);
+					var time = _time.Elapsed;
+					Stop();
 
-				return -(val + 95) / 100;
+					_speedControl.PlaybackRate = value;
+
+					CurrentTime = time;
+
+					Init();
+
+					if (wasPlaying)
+						Play();
+				}
 			}
 		}
 
 		public float Volume
 		{
-			set => Bass.BASS_ChannelSetAttribute(streamID, BASSAttribute.BASS_ATTRIB_VOL, value);
-			get
-			{
-				float val = 1;
+			get => _player.Volume;
 
-				Bass.BASS_ChannelGetAttribute(streamID, BASSAttribute.BASS_ATTRIB_VOL, ref val);
-
-				return val;
-			}
+			set => _player.Volume = value;
 		}
 
 		public void Reset()
 		{
 			Stop();
 
-			CurrentTime = TimeSpan.Zero;
+			_music.CurrentTime = TimeSpan.Zero;
 		}
+<<<<<<< HEAD
 		
 		public bool IsPlaying => Bass.BASS_ChannelIsActive(streamID) == BASSActive.BASS_ACTIVE_PLAYING;
 		public bool IsPaused => Bass.BASS_ChannelIsActive(streamID) == BASSActive.BASS_ACTIVE_PAUSED;
+=======
 
-		public TimeSpan TotalTime
-		{
-			get
-			{
-				long len = Bass.BASS_ChannelGetLength(streamID, BASSMode.BASS_POS_BYTES);
-				var time = TimeSpan.FromSeconds(Bass.BASS_ChannelBytes2Seconds(streamID, len));
+		public bool IsPlaying => _player.PlaybackState == PlaybackState.Playing;
+		public bool IsPaused => _player.PlaybackState == PlaybackState.Paused;
+>>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
 
-				return time;
-			}
-		}
+		public TimeSpan TotalTime => _music?.TotalTime ?? TimeSpan.Zero;
 
 		public TimeSpan CurrentTime
 		{
 			get
 			{
+<<<<<<< HEAD
 				var pos = Bass.BASS_ChannelGetPosition(streamID, BASSMode.BASS_POS_BYTES);
 				var length = Bass.BASS_ChannelGetLength(streamID, BASSMode.BASS_POS_BYTES);
 
 				return TimeSpan.FromTicks((long)(TotalTime.Ticks * pos / (decimal)length));
+=======
+				lock (locker)
+				{
+					if (_music == null)
+						return TimeSpan.Zero;
+
+					var time = _time.Elapsed;
+
+					time = time > _music.TotalTime ? TotalTime : time;
+
+					return time;
+				}
+>>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
 			}
 			set
 			{
-				//lock (locker)
+				lock (locker)
 				{
-					var pos = Bass.BASS_ChannelSeconds2Bytes(streamID, value.TotalSeconds);
+					if (_music == null)
+						return;
 
-					Bass.BASS_ChannelSetPosition(streamID, pos, BASSMode.BASS_POS_BYTES);
-				}
-			}
-		}
+					Stop();
 
+<<<<<<< HEAD
 		public decimal Progress
 		{
 			get
@@ -130,12 +206,26 @@ namespace Sound_Space_Editor
 				var length = Bass.BASS_ChannelGetLength(streamID, BASSMode.BASS_POS_BYTES);
 
 				return pos / (decimal)length;
+=======
+					_music.CurrentTime = value;
+					_time.Elapsed = value;
+
+					_speedControl.Reposition();
+
+					Pause();
+				}
+>>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
 			}
 		}
 
+		public double Progress => TotalTime == TimeSpan.Zero ? 0 : Math.Min(1, CurrentTime.TotalMilliseconds / TotalTime.TotalMilliseconds);
+
 		public void Dispose()
 		{
-			Bass.BASS_Free();
+			_player?.Dispose();
+			_speedControl?.Dispose();
+			_music?.Dispose();
+			_volumeStream?.Dispose();
 		}
 	}
 }
