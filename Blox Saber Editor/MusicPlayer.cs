@@ -1,5 +1,11 @@
 ﻿using System;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+using System.IO;
+using Blox_Saber_Editor.SoundTouch;
+using NAudio.Wave;
+>>>>>>> parent of 2cde2dc (fixes)
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Fx;
 =======
@@ -29,6 +35,7 @@ namespace Blox_Saber_Editor
 		public void Load(string file)
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
 			var stream = Bass.BASS_StreamCreateFile(file, 0, 0, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_STREAM_PRESCAN | BASSFlag.BASS_FX_FREESOURCE);
 			var volume = Volume;
 			var tempo = Tempo;
@@ -52,6 +59,15 @@ namespace Blox_Saber_Editor
 =======
 			_speedControl = new VarispeedSampleProvider(reader, 150, new SoundTouchProfile(true, true));
 >>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
+=======
+			var stream = Bass.BASS_StreamCreateFile(file, 0, 0, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE);
+			var volume = Volume;
+			var tempo = Tempo;
+
+			Bass.BASS_StreamFree(streamID);
+
+			streamID = BassFx.BASS_FX_TempoCreate(stream, BASSFlag.BASS_DEFAULT);
+>>>>>>> parent of 2cde2dc (fixes)
 
 			Init();
 
@@ -62,11 +78,19 @@ namespace Blox_Saber_Editor
 		public void Play()
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Bass.BASS_ChannelPlay(streamID, false);
 =======
 			lock (locker)
 			{
 				var time = CurrentTime;
+=======
+			//lock (locker)
+			{
+				Bass.BASS_ChannelPlay(streamID, false);
+			}
+		}
+>>>>>>> parent of 2cde2dc (fixes)
 
 				if (Progress >= 0.999998)
 				{
@@ -85,6 +109,7 @@ namespace Blox_Saber_Editor
 		public void Pause()
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
 			var pos = Bass.BASS_ChannelGetPosition(streamID, BASSMode.BASS_POS_BYTES);
 
 			Bass.BASS_ChannelPause(streamID);
@@ -97,9 +122,17 @@ namespace Blox_Saber_Editor
 				_player.Pause();
 			}
 >>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
+=======
+			//lock (locker)
+			{
+				Stop();
+			//	Bass.BASS_ChannelPause(streamID);
+			}
+>>>>>>> parent of 2cde2dc (fixes)
 		}
 		public void Stop()
 		{
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 			Bass.BASS_ChannelStop(streamID);
@@ -119,6 +152,12 @@ namespace Blox_Saber_Editor
 
 			Bass.BASS_ChannelSetPosition(streamID, pos, BASSMode.BASS_POS_BYTES);
 >>>>>>> parent of 86a6c55 (optimizations, redesign, autoplay)
+=======
+			//lock (locker)
+			{
+				Bass.BASS_ChannelStop(streamID);
+			}
+>>>>>>> parent of 2cde2dc (fixes)
 		}
 
 		public float Speed
@@ -162,7 +201,11 @@ namespace Blox_Saber_Editor
 			_music.CurrentTime = TimeSpan.Zero;
 		}
 <<<<<<< HEAD
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> parent of 2cde2dc (fixes)
 		public bool IsPlaying => Bass.BASS_ChannelIsActive(streamID) == BASSActive.BASS_ACTIVE_PLAYING;
 		public bool IsPaused => Bass.BASS_ChannelIsActive(streamID) == BASSActive.BASS_ACTIVE_PAUSED;
 =======
@@ -177,6 +220,7 @@ namespace Blox_Saber_Editor
 		{
 			get
 			{
+<<<<<<< HEAD
 <<<<<<< HEAD
 				var pos = Bass.BASS_ChannelGetPosition(streamID, BASSMode.BASS_POS_BYTES);
 				var length = Bass.BASS_ChannelGetLength(streamID, BASSMode.BASS_POS_BYTES);
@@ -195,6 +239,12 @@ namespace Blox_Saber_Editor
 					return time;
 				}
 >>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
+=======
+				long pos = Bass.BASS_ChannelGetPosition(streamID, BASSMode.BASS_POS_BYTES);
+				var time = TimeSpan.FromSeconds(Bass.BASS_ChannelBytes2Seconds(streamID, pos));
+
+				return time;
+>>>>>>> parent of 2cde2dc (fixes)
 			}
 			set
 			{
@@ -206,13 +256,18 @@ namespace Blox_Saber_Editor
 					Stop();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		public decimal Progress
+=======
+		public double Progress
+>>>>>>> parent of 2cde2dc (fixes)
 		{
 			get
 			{
 				var pos = Bass.BASS_ChannelGetPosition(streamID, BASSMode.BASS_POS_BYTES);
 				var length = Bass.BASS_ChannelGetLength(streamID, BASSMode.BASS_POS_BYTES);
 
+<<<<<<< HEAD
 				return pos / (decimal)length;
 =======
 					_music.CurrentTime = value;
@@ -223,6 +278,9 @@ namespace Blox_Saber_Editor
 					Pause();
 				}
 >>>>>>> parent of eea8ff6 (Bass.NET instead of NAudio and OpenAL)
+=======
+				return (double)(pos / (decimal)length);
+>>>>>>> parent of 2cde2dc (fixes)
 			}
 		}
 
